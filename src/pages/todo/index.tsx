@@ -1,40 +1,59 @@
-import { useState } from "react";
-import { todo } from "../../../models/todo.models";
+import { GetStaticProps } from 'next';
+import { useState } from 'react';
 
-export async function getStaticProps() {
-  const res = await fetch(" http://localhost:3500/todos");
-  const datas = await res.json();
+type Todo = {
+  id: number;
+  text: string;
+  completed: false;
+};
 
-  return {
-    props: {
-      datas,
-    },
-  };
-}
+const Todo = ({ datas }: { datas: Todo[] }) => {
+  const [inputText, setInputText] = useState('');
+  const [todos, setTodos] = useState<Todo[]>(datas);
 
-function Todo({ datas }: { datas: todo[] }) {
-  const [inputText, setinputText] = useState("");
-  const [todos, setTodos] = useState([]);
-  const addTodo = (e: Event) => {
-    e.preventDefault();
-  };
+  async function addTodo() {
+    try {
+      const res = await fetch('http://localhost:3500/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: inputText,
+          completed: false,
+        }),
+      });
+      const newTodo = await res.json();
+      setTodos([...todos, newTodo]);
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  }
 
   return (
     <>
+      <h1>Todo</h1>
       <div>
-        <h1>Todo</h1>
-        <input onChange={e => setinputText(e.target.value)} type="text" />
-        <button>Add</button>
+        <input type="text" onChange={(e) => setInputText(e.target.value)} />
+        <button onClick={addTodo}>Add</button>
       </div>
       <div>
         <ul>
-          {datas.map((data: any) => (
-            <li key={data.id}>{data.todo}</li>
+          {todos.map((todo) => (
+            <ul key={todo.id}>{todo.text}</ul>
           ))}
         </ul>
       </div>
     </>
   );
-}
+};
 
 export default Todo;
+
+export async function getStaticProps() {
+  const res = await fetch('http://localhost:3500/todos');
+  const datas = await res.json();
+  return {
+    props: { datas },
+  };
+}
