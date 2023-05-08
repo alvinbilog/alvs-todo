@@ -1,16 +1,6 @@
 {
   "todos": [
     {
-      "id": 1,
-      "text": "wash dishes",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "text": "clean the house",
-      "completed": false
-    },
-    {
       "id": 3,
       "text": "do the laundry",
       "completed": false
@@ -21,7 +11,7 @@
       "id": 4
     },
     {
-      "text": "test 2",
+      "text": "study reactjs",
       "completed": false,
       "id": 5
     },
@@ -34,6 +24,16 @@
       "text": "test",
       "completed": false,
       "id": 7
+    },
+    {
+      "text": "go to work",
+      "completed": false,
+      "id": 8
+    },
+    {
+      "text": "asdffda",
+      "completed": false,
+      "id": 9
     }
   ]
 }
